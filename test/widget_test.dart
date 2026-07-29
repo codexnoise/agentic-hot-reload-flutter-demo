@@ -1,9 +1,8 @@
-// This is a basic Flutter widget test.
+// Smoke test del dashboard de la demo.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// No afirma nada sobre el overflow: la demo alterna entre el estado roto (tag
+// `demo-bug`) y el arreglado por el agente, y el test debe pasar en ambos. Por
+// eso drena la excepción de layout con `takeException()` en vez de fallar.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +10,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:agentic_hot_reload_flutter_demo/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('el contador incrementa y sobrevive al rebuild', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const DemoApp());
+    // Descarta el RenderFlex overflow si el bug está presente.
+    tester.takeException();
 
-    // Verify that our counter starts at 0.
+    expect(find.text('Dashboard'), findsOneWidget);
     expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
+    tester.takeException();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
 }

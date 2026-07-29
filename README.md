@@ -59,8 +59,9 @@ agentic-hot-reload-flutter-demo/
 └── README.md
 ```
 
-> Nota: al momento de este README, `lib/` todavía tiene el scaffold base. Los
-> widgets de la demo se implementan siguiendo `claude/SPEC.md`.
+> El estado versionado de `lib/` es el **estado con el bug**: cuatro
+> `MetricCard` de 180pt dentro de un `Row` sin `Expanded`. El tag `demo-bug`
+> apunta a ese estado y es lo que restaura `scripts/reset_bug.sh`.
 
 ---
 
